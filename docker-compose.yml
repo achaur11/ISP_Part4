@@ -1,0 +1,32 @@
+version: '3'
+services:
+  master:
+    image: citusdata/citus:latest
+    hostname: master
+    environment:
+      - POSTGRES_PASSWORD=pass1
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
+    labels:
+      - "com.citusdata.role=Master"
+    volumes:
+      - ./insert_data.sql:/usr/local/bin/insert_data.sql
+      - ./schema.sql:/usr/local/bin/schema.sql
+
+
+  worker1:
+    image: citusdata/citus:latest
+    environment:
+      - POSTGRES_PASSWORD=pass1
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    labels:
+      - "com.citusdata.role=Worker"
+
+  worker2:
+    image: citusdata/citus:latest
+    environment:
+      - POSTGRES_PASSWORD=pass1
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    labels:
+      - "com.citusdata.role=Worker"
